@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
-import Home from "./Home";
 import {toast} from "react-toastify";
-import Apartment from "./Apartment";
 
 const Apartments = () => {
-    const usenavigate = useNavigate();
-    const [customerlist, listupdate] = useState(null);
     const [items, itemsUpdate] = useState([]);
 
     useEffect(() => {
