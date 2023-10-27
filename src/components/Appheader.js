@@ -1,36 +1,49 @@
 import { useState, useEffect } from "react";
+import { Navbar, Container, Nav, NavDropdown, NavLink, NavItem } from 'react-bootstrap';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Appheader = () => {
     const [displayusername, displayusernameupdate] = useState('');
+    const [displayuserrole, displayuserroleupdate] = useState('');
     const [showmenu, showmenuupdateupdate] = useState(false);
     const usenavigate = useNavigate();
     const location = useLocation();
     useEffect(() => {
-        if (location.pathname === '/login' || location.pathname === '/register') {
+        let username = sessionStorage.getItem('username');
+        let role = sessionStorage.getItem('userrole');
+        if (role === '' || role === null) {
             showmenuupdateupdate(false);
         } else {
             showmenuupdateupdate(true);
-            let username = sessionStorage.getItem('username');
-            if (username === '' || username === null) {
-                usenavigate('/login');
-            } else {
-                displayusernameupdate(username);
-            }
+            displayusernameupdate(username);
+            displayuserroleupdate(role);
         }
 
     }, [location])
     return (
-        <div>
-            {showmenu &&
-                <div className="header">
 
-                    <Link to={'/'}>Home</Link>
-                    <Link to={'/customer'}>Customer</Link>
-                    <span style={{ marginLeft: '70%' }}>Welcome <b>{displayusername}</b></span>
-                    <Link style={{ float: 'right' }} to={'/login'}>Logout</Link>
-                </div>
-            }
+        <div>
+            <Navbar bg="primary" variant="dark" collapseOnSelect expand="sm">
+                <Container>
+                    <Navbar.Brand href="/">Rentals</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="navbar-toggle" />
+                    <Navbar.Collapse id="navbar-toggle">
+                        <Nav className="me-auto">
+                            <Nav.Link href="/apartments">Apartments</Nav.Link>
+                        </Nav>
+                            {showmenu ?
+                                <Nav>
+                                    <Nav.Link href="/login">Logout</Nav.Link>
+                                    <Nav.Link href="#">Hello {displayusername} ({displayuserrole})</Nav.Link>
+                                </Nav>
+                                :
+                                <Nav>
+                                    <Nav.Link href="/login">Login</Nav.Link>
+                                </Nav>
+                            }
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
         </div>
     );
 }
